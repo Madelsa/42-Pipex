@@ -3,65 +3,78 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mabdelsa <mabdelsa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mahmoud <mahmoud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 15:48:57 by mahmoud           #+#    #+#             */
-/*   Updated: 2023/12/05 18:05:28 by mabdelsa         ###   ########.fr       */
+/*   Updated: 2023/12/06 20:42:51 by mahmoud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-char	*filter_envp(char **envp)
+void child_process(char **av, char **envp, int *fd)
 {
-	while (*envp++ != NULL)
+	char	*full_command_path;
+	char	**command;
+	int 	file_in;
+	
+	file_in = open(av[1], O_RDONLY, 0777);
+	if (file_in == -1)
+		error_msg();
+	close(fd[0]);
+	command = extract_command(av[2]);
+	full_command_path = locate_command_path(command[0], envp);
+	if (full_command_path == NULL)
 	{
-		if (ft_strncmp(*envp, "PATH=", 5) == 0)
-		{
-			*envp += 5;
-			break ;
-		}
+		free_arr(command);
+		error_msg();
 	}
-	return (*envp);
+	dup2(file_in, STDIN_FILENO);
+	dup2(fd[1], STDOUT_FILENO);
+	if (execve(full_command_path, command, envp) == -1)
+		error_msg();
 }
 
-char	*locate_command_path(char **av, char **envp)
-{
-	int		i;
-	char	*path_check;
-	char	**filtered_path;
-	char	*command_path;
-	char	*filtered_envp;
 
-	filtered_envp = filter_envp(envp);
-	i = 0;
-	path_check = NULL;
-	filtered_path = ft_split(filtered_envp, ':');
-	while (filtered_path[i] != NULL)
+void parent_process(pid_t pid, char **av, char **envp, int *fd)
+{	
+	char *full_command_path;
+	char **command;
+	int file_out;
+	
+	waitpid(pid, NULL, 0);
+	file_out = open(av[4], O_CREAT | O_WRONLY | O_TRUNC, 0777);
+	if (file_out == -1)
+		error_msg();
+	close(fd[1]);
+	command = extract_command(av[3]);
+	full_command_path = locate_command_path(command[0], envp);
+	if (full_command_path == NULL)
 	{
-		command_path = ft_strjoin("/", av[1]);
-		path_check = ft_strjoin(filtered_path[i], command_path);
-		free(command_path);
-		if (access(path_check, F_OK) == 0)
-			return (path_check);
-		i++;
+		free_arr(command);
+		error_msg();
 	}
-	return (NULL);
+	dup2(fd[0], STDIN_FILENO);
+	dup2(file_out, STDOUT_FILENO);
+	if (execve(full_command_path, command, envp) == -1)
+		error_msg();
 }
+
 
 int	main(int ac, char **av, char **envp)
 {
 	pid_t	pid;
-	char	*command_path;
-
-	(void)ac;
+	int		fd[2];
+	if (ac != 5)
+		return (ft_putstr_fd("Error: Invalid input format", 2), 1);
+	if (pipe(fd) == -1)
+		error_msg();
 	pid = fork();
 	if (pid == -1)
-		ft_putstr_fd("Error\n", 2);
+		error_msg();
 	else if (pid == 0)
-	{
-		command_path = locate_command_path(av, envp);
-		execve(command_path, &av[1], envp);
-	}
+		child_process(av, envp, fd);
+	else
+		parent_process(pid, av, envp, fd);
 	return (0);
 }

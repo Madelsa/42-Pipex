@@ -6,13 +6,11 @@
 #    By: mahmoud <mahmoud@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/12/04 15:45:59 by mahmoud           #+#    #+#              #
-#    Updated: 2023/12/04 15:55:55 by mahmoud          ###   ########.fr        #
+#    Updated: 2023/12/05 18:53:55 by mahmoud          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-
-
-SRC	=	pipex.c
+SRC	=	./pipex.c ./utils.c
 		
 NAME = pipex
 AR = ar rs
