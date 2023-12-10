@@ -6,17 +6,11 @@
 /*   By: mahmoud <mahmoud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/05 18:49:47 by mahmoud           #+#    #+#             */
-/*   Updated: 2023/12/06 21:01:05 by mahmoud          ###   ########.fr       */
+/*   Updated: 2023/12/10 16:34:58 by mahmoud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
-
-void error_msg(void)
-{
-	perror("Error");
-	exit(1);
-}
 
 void	free_arr(char **arr)
 {
@@ -43,9 +37,27 @@ char	*filter_envp(char **envp)
 
 char **extract_command(char *av)
 {
+	char **args;
 	char **command;
+	char *joined_args = NULL;
 	
-	command = ft_split(av, ' ');
+	args = ft_split(av, ' ');
+	int i = 1;
+	while (args[i] != NULL)
+	{
+		joined_args = ft_strjoin(joined_args, args[i]);
+		if (args[i + 1] != NULL)
+			joined_args = ft_strjoin(joined_args, " ");
+		i++;
+	}
+	command = (char **)malloc(sizeof(char *) * 3);
+	if (command == NULL)
+		return (NULL);
+	command[0] = ft_strdup(args[0]);
+	command[1] = ft_strdup(joined_args);
+	command[2] = NULL;
+	free(joined_args);
+	free_arr(args);
 	return (command);
 }
 
