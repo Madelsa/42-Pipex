@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mahmoud <mahmoud@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mabdelsa <mabdelsa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/05 18:49:47 by mahmoud           #+#    #+#             */
-/*   Updated: 2023/12/10 16:34:58 by mahmoud          ###   ########.fr       */
+/*   Updated: 2023/12/13 13:09:47 by mabdelsa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,14 +35,16 @@ char	*filter_envp(char **envp)
 	return (NULL);
 }
 
-char **extract_command(char *av)
+char	**extract_command(char *av)
 {
-	char **args;
-	char **command;
-	char *joined_args = NULL;
-	
+	char	**args;
+	char	**command;
+	char	*joined_args;
+	int		i;
+
+	joined_args = NULL;
 	args = ft_split(av, ' ');
-	int i = 1;
+	i = 1;
 	while (args[i] != NULL)
 	{
 		joined_args = ft_strjoin(joined_args, args[i]);
