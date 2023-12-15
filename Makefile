@@ -3,16 +3,16 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: mabdelsa <mabdelsa@student.42.fr>          +#+  +:+       +#+         #
+#    By: mahmoud <mahmoud@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/12/04 15:45:59 by mahmoud           #+#    #+#              #
-#    Updated: 2023/12/13 17:00:21 by mabdelsa         ###   ########.fr        #
+#    Updated: 2023/12/14 17:16:42 by mahmoud          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 SRC	=	./pipex.c ./utils.c \
 
-SRC_B = ./pipex_bonus.c ./utils.c \
+SRC_B = ./pipex_bonus.c ./utils.c ./bonus_utils.c \
 		
 NAME = pipex
 BONUS = pipex_bonus
