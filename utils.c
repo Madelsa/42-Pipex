@@ -6,7 +6,7 @@
 /*   By: mabdelsa <mabdelsa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/05 18:49:47 by mahmoud           #+#    #+#             */
-/*   Updated: 2023/12/13 13:09:47 by mabdelsa         ###   ########.fr       */
+/*   Updated: 2023/12/17 06:14:07 by mabdelsa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,34 @@ char	*filter_envp(char **envp)
 	return (NULL);
 }
 
+char	*ft_strjoin_px(char const *s1, char const *s2)
+{
+	char	*str;
+	size_t	i;
+	size_t	j;
+
+	i = 0;
+	j = 0;
+	if (s1 == NULL && s2 == NULL)
+		return (NULL);
+	if (s1 == NULL)
+		return (ft_strdup(s2));
+	else if (s2 == NULL)
+		return (ft_strdup(s1));
+	str = (char *)malloc(sizeof(char) * (ft_strlen(s1) + ft_strlen(s2) + 1));
+	if (str == NULL)
+		return (NULL);
+	while (s1[j] != '\0')
+		str[i++] = s1[j++];
+	j = 0;
+	while (s2[j] != '\0')
+		str[i++] = s2[j++];
+	str[i] = '\0';
+	if (s1)
+		free((char *)s1);
+	return (str);
+}
+
 char	**extract_command(char *av)
 {
 	char	**args;
@@ -47,9 +75,9 @@ char	**extract_command(char *av)
 	i = 1;
 	while (args[i] != NULL)
 	{
-		joined_args = ft_strjoin(joined_args, args[i]);
+		joined_args = ft_strjoin_px(joined_args, args[i]);
 		if (args[i + 1] != NULL)
-			joined_args = ft_strjoin(joined_args, " ");
+			joined_args = ft_strjoin_px(joined_args, " ");
 		i++;
 	}
 	command = (char **)malloc(sizeof(char *) * 3);
