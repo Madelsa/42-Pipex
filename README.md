@@ -16,6 +16,8 @@ The `Pipex` project requires students to create a program that mimics the behavi
 
 Here is an example demonstrating the usage of `pipex`:
 
+`Note:`make sure that `infile` exists in the same directory as `pipex`.
+
   ```bash
   ./pipex infile "ls -l" "grep pipex" outfile
   ```
@@ -26,7 +28,7 @@ Here is an example demonstrating the usage of `pipex`:
   `OR:`
   ```bash
   ./pipex_bonus here_doc stop cat  "wc -l"  file2
-  ```   
+  ```
 
 ## Usage
 
@@ -52,4 +54,4 @@ Here is an example demonstrating the usage of `pipex`:
    make bonus
    ```
 
-4. Now you can run `Pipex` as shown in [Examples](#examples)
+4. Now you can run `pipex` as shown in [Examples](#examples)
